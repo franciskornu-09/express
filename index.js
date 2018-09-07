@@ -1,33 +1,34 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const session = require('express-session');
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('./config/keys');
+require('./models/user');
+require('./services/passport');
+const authRoute = require('./routes/authRoutes');
+
+mongoose.connect(keys.OAUTHCREDENTIALS.mongoURI);
 
 const app = express();
-passport.use(new GoogleStrategy({
-        clientID: process.env.GOOGLE_CLIENT_ID || keys.OAUTHCREDENTIALS.googleClientID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET || keys.OAUTHCREDENTIALS.googleClientSecret,
-        callbackURL: "/auth/google/callback"
-    },
-    function (accessToken, refreshToken, profile, cb) {
-        // User.findOrCreate({googleId: profile.id}, function (err, user) {
-        //     return cb(err, user);
-        // });
 
-        console.log("ACCESS TOKEN" + accessToken);
-    }
-));
+app.use(session({secret: "qwert456dfgh4ydfgh46dcvbjijstlgxzghjfh345cvbn"}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-
-app.get('/', function (req, res) {
-
-    res.send("HI THERE");
-
+passport.serializeUser(function(user, done) {
+    // placeholder for custom user serialization
+    // null is for errors
+    done(null, user);
 });
 
-app.get('/auth/google', passport.authenticate('google', {
-    scope: ['profile', 'email']
-}));
+passport.deserializeUser(function(user, done) {
+    // placeholder for custom user deserialization.
+    // maybe you are going to get the user from mongo by id?
+    // null is for errors
+    done(null, user);
+});
+
+authRoute(app);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
