@@ -14,10 +14,10 @@ passport.use(new GoogleStrategy({
         User.findOne({googleId: profile.id})
             .then(function (user) {
                 if (user) {
-                    return done(null, profile);
+                    return done(null, user);
                 } else {
-                    new User({googleId: profile.id}).save().then(function (user) {
-                        return done(null, profile);
+                    new User({googleId: profile.id, credits:0}).save().then(function (user) {
+                        return done(null, user);
                     });
                 }
             });
@@ -28,3 +28,11 @@ passport.use(new GoogleStrategy({
 
     }
 ));
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
