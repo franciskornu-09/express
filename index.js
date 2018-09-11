@@ -11,6 +11,7 @@ const authRoute = require('./routes/authRoutes');
 const billingRoute = require('./routes/billingRoutes');
 
 mongoose.connect(keys.OAUTHCREDENTIALS.mongoURI);
+console.log("Mongoose State: "+ mongoose.connection.readyState);
 
 const app = express();
 app.use(bodyParser.json());
