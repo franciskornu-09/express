@@ -15,7 +15,9 @@ passport.use(new GoogleStrategy({
             .then(function (user) {
                 if (user) {
                     console.log("USER FROM SERVER " + JSON.stringify(user));
-                    return done(null, user);
+
+                    let data = {"account":user.account,"_id":user.id,"googleId":user.googleId};
+                    return done(null, data);
                 } else {
                     new User({googleId: profile.id, credits:0}).save().then(function (user) {
                         return done(null, user);
