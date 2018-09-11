@@ -14,6 +14,7 @@ passport.use(new GoogleStrategy({
         User.findOne({googleId: profile.id})
             .then(function (user) {
                 if (user) {
+                    console.log("USER FROM SERVER " + JSON.stringify(user));
                     return done(null, user);
                 } else {
                     new User({googleId: profile.id, credits:0}).save().then(function (user) {
