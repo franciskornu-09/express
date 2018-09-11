@@ -16,10 +16,10 @@ passport.use(new GoogleStrategy({
                 if (user) {
                     console.log("USER FROM SERVER " + JSON.stringify(user));
 
-                    let data = {"account":user.account,"_id":user.id,"googleId":user.googleId};
-                    return done(null, data);
+                    // let data = {"account":user.account,"_id":user.id,"googleId":user.googleId};
+                    return done(null, 'EMpty');
                 } else {
-                    new User({googleId: profile.id, credits:0}).save().then(function (user) {
+                    new User({googleId: profile.id, credits: 0}).save().then(function (user) {
                         return done(null, user);
                     });
                 }

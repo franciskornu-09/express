@@ -18,9 +18,6 @@ module.exports = function(app) {
 
     app.get('/api/current_user', function (req, res) {
         console.log("CURRENT USER 1 "+ JSON.stringify(req.user));
-        // if (req.user !== undefined){
-        //
-        // }
         res.send(req.user);
     })
 };
